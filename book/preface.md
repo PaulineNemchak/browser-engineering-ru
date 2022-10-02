@@ -1,20 +1,13 @@
 ---
-title: Preface
+title: Предисловие
 type: Preface
 next: intro
 ...
 
-A computer science degree traditionally includes courses in operating
-systems, compilers, and databases in order to replace mystery with
-code. These courses transform Linux, Postgres, and LLVM into
-improvements, additions, and optimizations to an understandable core
-architecture. The lesson transcends the specific system studied: _all_
-computer systems, no matter how big and seemingly complex, can be
-studied and understood[^other-reasons].
+Степень computer science традиционно включает курсы по операционным системам, компиляторам и базам данных, для того чтобы заменить тайну кодом. Эти предметы превращают Linux, Postgres, и LLVM в улучшения, дополнения и оптимизации к понятной кодовой архитектуре. Урок выходит за пределы конкретной изучаемой системы: _все_ компьютерные системы, не важно, каикми бы большими и сложными они ни казались, можно изучить и понять[^other-reasons].
 
-[^other-reasons]: Others reasons for these classes: a focus on speed; learning
-low-level APIs; practice with C; knowing the stack; using systems better; and
-the importance of the system covered.
+
+[^other-reasons]: Другие причины для этих уроков: ориентация на производительность; изучение низкоуровневых API; практика C; знание стека; умение лучше использовать системы; и важность рассматриваемой системы.
 
 But web browsers are still opaque, not just to students but to faculty
 and industry programmers. This book dissipates this mystery by
