@@ -4,101 +4,52 @@ type: Preface
 next: intro
 ...
 
-Степень computer science традиционно включает курсы по операционным системам, компиляторам и базам данных, для того чтобы заменить тайну кодом. Эти предметы превращают Linux, Postgres, и LLVM в улучшения, дополнения и оптимизации к понятной кодовой архитектуре. Урок выходит за пределы конкретной изучаемой системы: _все_ компьютерные системы, не важно, каикми бы большими и сложными они ни казались, можно изучить и понять[^other-reasons].
+Степень computer science обычно включает курсы по операционным системам, компиляторам и базам данных, для того чтобы объяснить тайны кодом. Эти предметы превращают Linux, Postgres, и LLVM в улучшения, дополнения и оптимизации к понятной кодовой архитектуре. Урок выходит за пределы конкретной изучаемой системы: _все_ компьютерные системы, не важно, какими бы большими и сложными они ни казались, можно изучить и понять[^other-reasons].
 
 
-[^other-reasons]: Другие причины для этих уроков: ориентация на производительность; изучение низкоуровневых API; практика C; знание стека; умение лучше использовать системы; и важность рассматриваемой системы.
+[^other-reasons]: Другие причины для этих уроков: ориентация на производительность; изучение низкоуровневых API; практика C; знание стека; улучшить умение использовать системы; понять важность рассматриваемой системы.
 
-But web browsers are still opaque, not just to students but to faculty
-and industry programmers. This book dissipates this mystery by
-systematically explaining all major components of a web browser.
+Но веб-браузеры до сих пор непрозрычны, не только для студентов, но и для преподавателей и промышленных программистов. Эта книга раскрывает эту тайну, систематически объясняя все основные компоненты веб-браузера.
 
 
-Reading this book
+Читая эту книгу
 =================
 
-Parts 1--3 of this book construct a basic browser weighing in around
-1000 lines of code, twice that with the exercises. The average chapter
-takes 4--6 hours to read, implement, and debug for someone with a few
-years' programming experience. Part 4 of this book covers advanced
-topics; those chapters are longer and have more code.
+Части 1--3 этой книги помогут создать базовый браузер примерно в 1000 строк кода (в два раза больше с упражнениями). В среднем у человека с нескольими годами опыта в программировании уходит 4--6 часов на чтение одной главы, последующую имплементацию и дебаггинг. Глава 4 посвящена более продвинутым темам; эти темы длиннее и содержат больше кода.
 
-Your web browser will "work" every step of the way, and every chapter
-will build upon the last.[^jrwilcox-idea] That way, you will also
-practice growing and improving complex software. If you feel
-particularly interested in some component, please do flesh it out,
-complete the exercises, and add missing features. We've tried to
-arrange it so that this doesn't make later chapters more difficult.
+Ваш браузер будет «работать» на каждом шаге, и каждая глава будет основываться на предыдущей.[^jrwilcox-idea] Таким образом, вы также будете практиковаться в увеличении и улучшении сложного софта. Если вам будет особенно интересен какой-то компонент, «отточите» его, закончите упражнения, и добавьте недостающий функционал. Мы постарались не усложнять последующие главы.
 
-[^jrwilcox-idea]: This idea is from [J.R. Wilcox][jrw], inspired in turn by
-    [S. Zdancewic][sz]'s course on compilers.
+[^jrwilcox-idea]: Идея взята у [Дж. Р. Уилкокса][jrw], который в свою очередь вдохновлялся курсом по компиляторам [С. Зданцевича][sz].
 
-The code in this book [uses Python 3](blog/why-python.md), and we
-recommend you follow along in the same. When the book shows Python
-command lines, it calls the Python binary `python3`.^[A few operating
-systems use `python`, but on most that means Python 2.] That said, the
-text avoids dependencies where possible and you can try to follow
-along in another language. Make sure your language has libraries for
-TLS connections (Python has one built in), graphics (the text uses
-Tk), and JavaScript evaluation (the text uses DukPy).
+Код в этой книге [использует python 3](blog/why-python.md), и мы рекомендуем вам придерживаться того же. Когда в книге показан код, написанный на питоне, он вызывает бинарный `python3`.^[Некоторые операционные системы используеют `python`, но обычно это означает Python 2.] Тем не менее, текст избегает зависимостей там, где это возможно, и вы можете пробовать писать код на другом языке. Убедитесь в том, что для вашего языка есть библиотеки для TLS соединений (в питоне есть встроенная библиотека), графики (в книге используются Tk), и вычисление джаваскрипта (в книге используется DukPy).
     
 [jrw]: https://jamesrwilcox.com
 [sz]: https://www.cis.upenn.edu/~stevez/
 
-This book's browser is irreverent toward standards: it handles only a
-sliver of the full HTML, CSS, and JavaScript languages, mishandles
-errors, and isn't resilient to malicious inputs. It is also quite
-slow. Despite that, its architecture matches that of real browsers,
-providing insight into those 10 million line of code behemoths.
+Браузер из этой книги не чтит стандартов: он поддерживает только часть полных языков HTML, CSS и JavaScript, неправильно обрабатывает ошибки и не защищён от инъекций вредоносного кода. Он также довольно медленный. Несмотря на это, его архитектура соответствует архитектуре реальных браузеров, что даёт понимание, как устроены эти гиганты в десятки миллионов строк кода.
 
-That said, we've tried to explicitly note when the book's browser
-simplifies or diverges from standards. And in general, when you're not
-sure how your browser should behave in some edge case, fire up your
-favorite web browser and try it out.
+Тем не менее, мы попытались явно отметить, когда браузер в книге упрощает или отклоняется от стандартов. И в целом, когда вы не уверены, как браузер должен себя вести в каком-то эдж кейсе, запустите свой любимый браузер и попробуйте воспроизвести действия там.
 
-Acknowledgments
+Благодарности
 ===============
 
-We'd like to recognize the countless people who built the web and the
-various web browsers. They are wonders of the modern world. Thank you!
-We learned a lot from the books and articles listed in this book's
-[bibliography](bibliography.md)---thank you to their authors. And
-we're especially grateful to the many contributors to articles on
-Wikipedia (especially those on historic software, formats, and
-protocols). We are grateful for this amazing resource, one which in
-turn was made possible by the very thing this book is about.
+Мы бы хотели отметить бесчисленное количество людей, которые построили веб и различные браузеры. Они --- просто чудо современного мира. Спасибо! Мы многое узнали из книг и статей, перечисленных в [библиографии](bibliography.md) --- спасибо их авторам. И мы особенно благодарны многим контрибьюторам статей на википедии (особенно тем, которые посвящены историческим программного обеспечения, форматам и протоколам). Мы благодарны за этот замечательный ресурс, который, в свою очередь, возможен благодаря главному герою этой книги.
 
-*Pavel*: [James R. Wilcox][jrw] and I dreamed up this course during a
-late-night chat at ICFP 2018. [Max Willsey][mwillsey] proof-read and
-helped sequence the chapters. [Zach Tatlock][ztatlock] encouraged me
-to develop the book into a course. And the students of CS 6968 and CS
-4962 at the University of Utah found countless errors and suggested
-important simplifications. I am thankful to all of them. Most of all,
-I am thankful to my wife [Sara][saras], who supported my writing the
-book, listened to countless status updates, and gave me the strength
-to finish this many-year-long project.
+*Павел*: Мы с [Джеймс Р. Уилкокс][jrw] придумали этот курс во время разговора поздей ночью на ICFP 2018 (International Conference on Functional Programming). [Макс Уилзи][mwillsey] делал вычитку и помогал упорядочить главы. [Зак Татлок][ztatlock] вдохновил меня на превращение книги в курс. А студенты CS 6968 и CS
+496 Университета Юты нашли бесчисленное количество ошибок и предложили важные упрощения. Я благодарен всем им. Прежде всего, я благодарен моей жене [Саре][saras], которая поддерживала меня в написании книги, выслушивала бесчисленные изменения и наделила меня силой закончить этот многолетний проект. 
+
 
 [mwillsey]: https://www.mwillsey.com/
 [saras]: https://www.sscharmingds.com/
 [ztatlock]: https://homes.cs.washington.edu/~ztatlock/
 
-*Chris*: I am eternally grateful to my wife Sara for patiently
-listening to my endless musings about the web, and encouraging me to
-turn my idea for a browser book into reality. I am also grateful to
-[Dan Gildea][dan-gildea] for providing feedback on my browser-book
-concept on multiple occassions. Finally, I'm grateful to Pavel for
-doing the hard work getting this project off the ground and allowing
-me to join the adventure. (Turns out Pavel and I had the same idea!)
+*Крис*: Я бесконечно благодарен моей жене Саре за то, что она терпеливо слушала мои бесконечные размышления о вебе и поддерживала меня в превращении моей идеи книги о браузере в действительность. Я также благодарен [Дану Гилдею][dan-gildea] за неоднократное предоставление фидбека о моей идее браузера-книги. Наконец, я благодарен Павлу за тяжёлую работу, которую он совершил, чтобы запустить этот проект, и за то, что разрешил мне присоединиться к этому приключению. (Как оказалось, у нас с Павлом была одна и та же идея!)
 
 [dan-gildea]: https://www.cs.rochester.edu/u/gildea/
 
-A final note
+ Последнее примечание
 ============
 
-This book is, and will remain, a work in progress. Please leave
-comments and mark typos; the book has built-in feedback tools, which
-you can enable with `Ctrl-E` (or `Cmd-E` on a Mac). The full source
-code is also available [on GitHub][github], though we prefer to
-receive comments through the built-in tools.
+Эта книга является и останется «работой в процессе». Пожалуйста, оставляйте комментарии и отмечайти опечатки; в книге есть встроенные инструменты для обратной связи, который можно найти, нажав `Ctrl-E` (или `Cmd-E` на маке). Полный исходный код также доступен [на гитхабе][github], хотя мы предпочитаем получать комментарии через встроенные инструменты.
 
 [github]: https://github.com/browserengineering/book
