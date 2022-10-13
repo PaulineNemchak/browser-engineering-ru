@@ -139,7 +139,7 @@ returns its right hand side. I use `void()` to avoid testing that.
     >>> js.run("void(document.querySelectorAll('p')[0].innerHTML" +
     ...     " = 'This is a <b id=new>new</b> element!')")
 
-Once we've changed the page, the browser should rerender:
+Once we've changed the page, the browser should re-render:
 
     >>> lab9.print_tree(b.tabs[0].document)
      DocumentLayout()
@@ -172,7 +172,7 @@ We should also be able to delete nodes this way:
     >>> js.run("document.querySelectorAll('b').length")
     0
     
-The page is rerendered again:
+The page is rer-endered again:
 
     >>> lab9.print_tree(b.tabs[0].document)
      DocumentLayout()
@@ -235,7 +235,7 @@ Note that the `input` element has a value of `hi`:
     >>> js.run("input.getAttribute('value')")
     'hi'
 
-Clicking on the link should be cancelled because we don't actually want to
+Clicking on the link should be canceled because we don't actually want to
 navigate to a new page.
 
     >>> js.run("a.addEventListener('click', " +
@@ -288,7 +288,7 @@ prevented submission:
     'http://test.test/html'
     
 Similarly, when we clicked on the `input` element its `value` should be cleared,
-but when we then typed `t` into it that was cancelled so the value should still
+but when we then typed `t` into it that was canceled so the value should still
 be empty at the end:
 
     >>> js.run("input.getAttribute('value')")
