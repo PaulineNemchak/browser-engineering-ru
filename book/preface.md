@@ -1,6 +1,6 @@
 ---
 title: Предисловие
-type: Preface
+type: Предисловие
 next: intro
 ...
 
