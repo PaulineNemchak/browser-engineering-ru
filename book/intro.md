@@ -1,75 +1,37 @@
 ---
-title: Browsers and the Web
-type: Introduction
+title: Браузеры и веб
+type: Вступление
 next: history
 prev: preface
 ...
 
-Why study web browsers? The way I see it, browsers are fundamental to the web,
-to modern computing, and even to the economy broadly---so it's worth knowing how
-they work. And in fact, cool algorithms, tricky data structures, and fundamental
-concepts come alive inside a web browser. This book walks you through building a
-browser, from scratch. I hope, as you read it, that you fall in love with web
-browsers, just like I did.
+Зачем изучать веб-браузеры? То, как я это вижу, браузеры имеют фундмаентальное значение для веба, современных вычислений и даже для экономики в целом---поэтому следует знать, как они работают. И на самом деле, классные алгоритмы, сложные структуры данных и фундаментальные концепты оживают внутри браузера. Эта книга проведёт вас через процесс построения браузера с нуля. Я надеюсь, вы влюбитесь в веб-браезуры по мере прочтения книги так же, как и я.
 
-The browser and me
+Браузер и я
 ==================
 
-I---this is Chris speaking---have known the web[^theweb] for all of my adult
-life. Since I first encountered the web and its predecessors,[^bbs] in the
-early 90s, I've been fascinated by browsers and the concept of networked user
-interfaces. When I [surfed][websurfing] the web, even in its earliest form, I
-felt I was seeing the future of computing. In some ways, the web and I grew
-together---for example, in 1994, the year the web went commercial, was the same
-year I started college; while there I spent a fair amount of time surfing it,
-and by the time I graduated in 1999, the browser had fueled the famous dot-com
-speculation gold rush. The company for which I now work, Google, is a child of
-the web and was founded during that time. The web for me is something of a
-technological companion, and I’ve never been far from it in my studies or work.
 
-[^theweb]: Broadly defined, the web is the interlinked network (“web”)
-of [web pages](https://en.wikipedia.org/wiki/Web_page) on the
-internet. If you've never made a web page, I recommend MDN's [Learn
-Web Development][learn-web] series, especially the [Getting
-Started][learn-basics] guide. This book will be easier to read if
-you're familiar with the core technologies.
-    
-[learn-web]: https://developer.mozilla.org/en-US/docs/Learn
-[learn-basics]: https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web
+Я --- это говорит Крис --- знаком с интернетом[^theweb] всю свою возрослую жизнь. С тех пор, как я впервые столкнулся с вебом и его предшественниками в начале 90-х, я был восхищён браузерами и концепцией сетевых пользовательских интерфейсов. Когда я [сёрфил][websurfing] по интернету, даже на его ранних стадиях, я чувствовал, что вижу будущее вычислений. В каком-то смысле, веб и я выросли вместе --- например, в 1994 году, когда интернет стал коммерческим, я пошёл в колледж; там я провёл достаточно много времени в поисках информации в интернете, и к моему году выпуска в 1999 году, браузер привёл к известному буму дот-комов. Компания, в которой я сейчас работаю, Google, дитя интернета, была создана в это время. Для меня интернет --- что-то типа технологического товарища, и я никогда не уходил от веба далеко в моих исследованиях или работе.
+
+[^theweb]: В широком смысле, веб это тесно взаимосвязанная сеть (“веб”) [веб-страниц](https://en.wikipedia.org/wiki/Web_page) в интернете. Если вы никогда не создавали веб-страницу, я рекомендую серию статей [Изучение веб-разработки][learn-web] на MDN, особенно гайд [Начало работы с вебом][learn-basics]. Эту книгу будет проще читать,  если вы знакомы с основными технологиями.
+
+[learn-web]: https://developer.mozilla.org/ru/docs/Learn
+[learn-basics]: https://developer.mozilla.org/ru/docs/Learn/Getting_started_with_the_web
 
 [websurfing]: https://www.pcmag.com/encyclopedia/term/web-surfing
 
-[^bbs]: For me, [BBS](https://en.wikipedia.org/wiki/Bulletin_board_system)
-systems over a dial-up modem connection. A BBS is not all that different from a
-browser if you think of it as a window into dynamic content created somewhere
-else on the internet.
+[^bbs]: Для меня это [BBS](https://ru.wikipedia.org/wiki/BBS) системы через коммутируемые модемные соединения. BBS не так сильно отличаются от браузера, если подумать о них как  об окне в динамический контент, созданный где-то в интернете.
 
-In my freshman year at college, I attended a presentation by a RedHat salesman.
-The presentation was of course aimed at selling RedHat Linux, probably calling
-it the "operating system of the future" and speculating about the "year of the
-Linux desktop". But when asked about challenges RedHat faced, the salesman
-mentioned not Linux but _the web_: he said that someone "needs to make a good
-browser for Linux."[^netscape-linux] Even back then, in the very first year or
-so of the web, the browser was already a necessary component of every computer.
-He even threw out a challenge: "how hard could it be to build a better browser?"
-Indeed, how hard could it be? What makes it so hard? That question stuck with me
-for a long time.[^meantime-linux]
+Однаджы в первый год учёбы в колледже я посетил презентацию торгового представителя RedHat. Презентация, конечно же, была направлена на продажу RedHat Linux, называя его «операционной системой будущего» и спекулируя на тему «года компьютеров на Линуксе». Но, когда был задан вопрос о проблемах, с которыми сталкивается RedHat, представитель упомянул не Линукс, а _веб_: он сказал, что кто-то «должен сделать хороший браузер для Линукса».[^netscape-linux] Даже тогда, в самые первые годы веба, браузер уже был необходимым компонентом каждого компьютера. Он даже бросил вызов: «насколько сложно построить лучший браузер»? И правда, насколько сложным это может быть? Почему это так сложно? Этот вопрос надолго засел у меня в голове.[^meantime-linux]
 
-[^netscape-linux]: Netscape Navigator was available for Linux at that time, but
-it wasn’t viewed as especially fast or featureful compared to its implementation
-on other operating systems.
+[^netscape-linux]: Netscape Navigator был уже доступен на Линуксе, но он был не настолько быстр и функционален как имплементации на других операционных системах.
 
-[^meantime-linux]: Meanwhile, the "better Linux browser than Netscape" took a
-long time to appear....
+[^meantime-linux]: "Лучший браузер на Linux, чем Netscape" появился очень нескоро...
 
-How hard indeed! After seven years in the trenches working on Chrome, I now know
-the answer to his question: building a browser is both easy and incredibly hard,
-both intentional and accidental. And everywhere you look, you see the evolution
-and history of the web wrapped up in one codebase. But most of all, it's
-fun and endlessly interesting.
+И впрямь, насколько сложно! После семи лет работы над Chrome я знаю ответ на его вопрос: создание браузера одновременно и просто, и невероятно трудно, как намеренно, так и случайно. И куда бы вы ни посмотрели, вы везде видите эволюцию и историю веба, свёрнутые в одну кодовую базу. Но больше всего это весело и бесконечно интересно.
 
-So that's how I fell in love with web browsers. Now let me tell you why you
-will, too.
+Вот как я влюбился в браузеры. Теперь, позвольте мне рассказать, почему вы тоже влюбитесь.
+
 
 The web in history
 ==================
