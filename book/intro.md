@@ -33,29 +33,15 @@ prev: preface
 Вот как я влюбился в браузеры. Теперь, позвольте мне рассказать, почему вы тоже влюбитесь.
 
 
-The web in history
+Веб в истории
 ==================
 
-The web is a grand, crazy experiment. It's natural, nowadays, to watch videos,
-read news, and connect with friends on the web. That can make the web seem
-simple and obvious, finished, already built. But the web is neither simple nor
-obvious. It is the result of experiments and research reaching back to nearly
-the beginning of computing[^precursors] about how to help people connect and
-learn from each other.
+Веб — это великий и безумный эксперимент. Сегодня совершенно нормально смотреть видео, читать новости и общаться с друзьями в интернете. Из-за этого может показаться, что веб прост и очевиден, закончен, уже построен. Но веб ни прост, ни очевиден. Это результат экспериментов и исследований, которые берут своё начало почти с самого начала вычислительной техники[^precursors], посвящённый тому, чтобы помочь людям общаться и учиться друг у друга.
 
-[^precursors]: And the web _also_ needed rich computer displays, powerful
-UI-building libraries, fast networks, and sufficient CPU power and information
-storage capacity. As so often happens with technology, the web had many similar
-predecessors, but only took its modern form once all the pieces came together.
 
-In the early days, the internet was a world wide network of computers, largely
-at universities, labs, and major corporations, linked by physical cables and
-communicating over application-specific protocols. The early web built on this
-foundation. Web pages were files in a specific format stored on specific
-computers, and web browsers used a custom protocol to request them. URLs for web
-pages named the computer and the file, and early servers did little besides read
-files from a disk. The logical structure of the web mirrored its physical
-structure.
+[^precursors]: Вебу _также_ нужны были дисплеи с насыщенными цветами, мощные UI-библиотеки, быстрые сети и достаточная мощь ЦП и объём носителей информации. Как это часто бывает с технологиями, веб имел много предшественников, но приобрёл он свою современную форму только когда все части собрались вместе.
+
+Изначально интернет был мировой сетью компьютеров, обычно находящихся в университетах, лабораториях и крупных корпорациях, связанных физическими кабелями и обменивающихся через специфичные для задачи протоколы. На этом был построен ранний веб. Веб-страницы были файлами в определенном формате на определенных компьютерах, и веб-браузеры использовали специальный протокол для запроса этих файлов. URL-адреса веб-страниц называли компьютер и файл, а ранние серверы не делали ничего, кроме как читать файлы с диска. Логическая структура веб-страниц отражала ее физическую структуру.
 
 A lot has changed. HTML is now usually dynamically assembled on the
 fly[^server-side-rendering] and sent on demand to your browser. The pieces being
