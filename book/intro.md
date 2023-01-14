@@ -43,20 +43,9 @@ prev: preface
 
 Изначально интернет был мировой сетью компьютеров, обычно находящихся в университетах, лабораториях и крупных корпорациях, связанных физическими кабелями и обменивающихся через специфичные для задачи протоколы. На этом был построен ранний веб. Веб-страницы были файлами в определенном формате на определенных компьютерах, и веб-браузеры использовали специальный протокол для запроса этих файлов. URL-адреса веб-страниц называли компьютер и файл, а ранние серверы не делали ничего, кроме как читать файлы с диска. Логическая структура веб-страниц отражала ее физическую структуру.
 
-A lot has changed. HTML is now usually dynamically assembled on the
-fly[^server-side-rendering] and sent on demand to your browser. The pieces being
-assembled are themselves filled with dynamic content---news, inbox contents, and
-advertisements adjusted to your particular tastes. Even URLs no longer identify
-a specific computer---content distribution networks route a URL to any of
-thousands of computers all around the world. At a higher level, most web pages
-are served not from someone's home computer[^self-hosted] but from a social
-media platform or cloud computing service.
+Многое изменилось. HTML теперь, как правило, динамически собирается на лету[^server-side-rendering] и отправляется по запросу в ваш браузер. Собираемые части сами наполняются динамическим контентом — новостями, содержимым входящих сообщений и рекламными объявлениями, адаптированными к вашим конкретным вкусам. Даже URL-адреса больше не идентифицируют конкретный компьютер — сети доставки содержимого (CDN) направляют URL-адрес на любой из тысяч компьютеров по всему миру. На более высоком уровне большинство веб-страниц обслуживаются не с чьего-либо домашнего компьютера[^self-hosted], а с платформы социальных сетей или платформы облачных вычислений.
 
-[^server-side-rendering]: "Server-side rendering" is the process of assembling
-HTML on the server when loading a web page. Server-side rendering often uses web
-tech like JavaScript, and even a [headless
-browser](https://en.wikipedia.org/wiki/Headless_browser). Yet one more place
-browsers are taking over!
+[^server-side-rendering]: «Рендеринг на стороне сервера» — это процесс сборки HTML на сервере при загрузке веб-страницы. Рендеринг на стороне сервера часто использует такие веб-технологии, как JavaScript, и даже [headless браузер](https://en.wikipedia.org/wiki/Headless_browser). Еще одно место, которое браузеры берут под контроль!
 
 [^self-hosted]: People actually did this! And when their website became popular,
 it often ran out of bandwidth or computing power and became inaccessible.
