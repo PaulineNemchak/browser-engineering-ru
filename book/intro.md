@@ -69,29 +69,16 @@ prev: preface
 
 Ключевая вещь, которую нужно понять, это то, что этот великий эксперимент [не закончен](change.md). Суть интернета останется, но изучая веб-браузеры, вы имеете шанс внести свой вклад и определить его будущее.
 
-Real browser codebases
+Настоящие кодовые базы браузеров
 ======================
 
-So let me tell you what it's like to contribute. Some time during my first few
-months of working on Chrome, I came across the code implementing the
-[`<br>`][br-tag] tag---look at that, the good-old `<br>` tag, which I’ve used
-many times to insert newlines into web pages! And the implementation turns out
-to be barely any code at all, both in Chrome and in this book's simple browser.
+Давайте я расскажу вам, каково это — контрибьютить в браузеры. Во время моих первых нескольких месяцев работы над Хромом я наткнулся на код, реализующий тег [`<br>`][br-tag] --- да, старый-добрый тег `<br>`, который я много раз использовал для вставки новых строк в веб-страницы! И оказалось, что реализация почти не занимает кода, ни в Хроме, ни в простом браузере из этой книги.
 
 [br-tag]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/br
 
-But Chrome as a whole---its features, speed, security, reliability---_wow_.
-_Thousands_ of person-years went into it. There is a constant pressure to do
-more---to add more features, to improve performance, to keep up with the "web
-ecosystem"---for the thousands of businesses, millions of
-developers,[^developers] and billions of users on the web.
+Но Chrome в целом --- его функции, скорость, безопасность, надежность --- _вау_. _Тысячи_ человеко-лет были потрачены на это. Есть постоянное девление, что надо делать больше --- добавлять больше функций, улучшать производительность, идти в ногу с «веб-экосистемой» --- для тысяч бизнесов, миллионов разработчиков[^developers] и миллиардов пользователей в интернете.
 
-[^developers]: I usually prefer “engineer”---hence the title of this book---but
-“developer” or “web developer” is much more common on the web. One important
-reason is that anyone can build a web page---not just trained software engineers
-and computer scientists. “Web developer” also is more inclusive of additional,
-critical roles like designers, authors, editors, and photographers. A web
-developer is anyone who makes web pages, regardless of how.
+[^developers]: Обычно я предпочитаю использовать слово «инженер» --- отсюда и название этой книги --- но «разработчик» или «веб-разработчик» гораздо более распространены в интернете. Одна из важных причин в том, что любой может создать веб-страницу --- не только обученные программисты и специалисты в области информатики. «Веб-разработчик» также более инклюзивный термин для дополнительных, критических роли, таких как дизайнеры, авторы, редакторы и фотографы. Веб-разработчик --- это любой, кто делает веб-страницы, независимо от того, как они это делают.
 
 Working on such a codebase can feel daunting. I often find lines of code last
 touched 15 years ago by someone I've never met; or even now discover files and
