@@ -59,29 +59,15 @@ prev: preface
 * Пользователь использует _User Agent_, называемый _браузером_, для навигации по сети.
 * Все эти строительные блоки являются открытыми, стандартизированными и бесплатными для использования или реиспользования.
 
-As a philosophical matter, perhaps one or another of these principles is
-secondary. One could try to distinguish between the networking and rendering
-aspects of the web. One could abstract linking and networking from the
-particular choice of protocol and data format. One could ask whether the browser
-is necessary in theory, or argue that HTTP, URLs, and hyperlinking are the only
-truly essential parts of the web.
+С философской точки зрения, тот или иной из этих принципов может показаться вторичным. Можно попытаться провести различие между сетевым взаимодействием и рендерингом. Можно было бы абстрагировать ссылки и сети от конкретного выбора протокола и формата данных. Кто-то может задаться вопросом, необходим ли браузер в теории, или утверждать, что HTTP, URL-адреса и гиперссылки являются единственными действительно важными частями Интернета.
 
-Perhaps.[^perhaps] The web is, after all, an experiment; the core technologies
-evolve and grow. But the web is not an accident; its original design reflects
-truths not just about computing, but about how human beings can connect and
-interact. The web not only survived but thrived during the virtualization of
-hosting and content, specifically due to the elegance and effectiveness of
-this original design.
+С философской точки зрения, возможно, один или другой из этих принципов является второстепенным. Можно попытаться выделить сетевые и аспекты ренедера в вебе. Можно абстрагировать ссылки и сетевое взаимодействие от конкретного протокола и формата данных. Можно спросить, необходим ли в теории браузер, или поспорить, что HTTP, URL и гиперссылки являются единственно необходимыми частями веб-сайта.
 
-[^perhaps]: It is indeed true that one or more of the implementation choices
-could be replaced, and perhaps that will happen over time. For example,
-JavaScript might eventually be replaced by another language or technology, HTTP
-by some other protocol, or HTML by its successor. Certainly all of these
-technologies have been through many versions, but the web has stayed the web.
+Возможно.[^perhaps] Веб-сайт всё же является экспериментом; основные технологии развиваются и растут. Но интернет не является случайностью; его исходный дизайн отражает истины не только о вычислениях, но и о том, как люди могут связываться и взаимодействовать. Веб не только выжил, но и процветал во время виртуализации хостинга и контента, в частности благодаря элегантности и эффективности этого исходного дизайна.
 
-The key thing to understand is this grand experiment is [not over](change.md).
-The essence of the web will stay, but by studying web browsers you have the
-chance to contribute and to shape its future.
+[^perhaps]: Действительно, какие-то выборы технологий в реализациях могут быть заменены, и, возможно, это произойдет в будущем. Например, JavaScript в конечном итоге может быть заменен другим языком или технологией, HTTP другим протоколом, а HTML его преемником. Конечно, все эти технологии прошли через много версий, но веб остался вебом.
+
+Ключевая вещь, которую нужно понять, это то, что этот великий эксперимент [не закончен](change.md). Суть интернета останется, но изучая веб-браузеры, вы имеете шанс внести свой вклад и определить его будущее.
 
 Real browser codebases
 ======================
