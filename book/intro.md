@@ -47,21 +47,17 @@ prev: preface
 
 [^server-side-rendering]: «Рендеринг на стороне сервера» — это процесс сборки HTML на сервере при загрузке веб-страницы. Рендеринг на стороне сервера часто использует такие веб-технологии, как JavaScript, и даже [headless браузер](https://en.wikipedia.org/wiki/Headless_browser). Еще одно место, которое браузеры берут под контроль!
 
-[^self-hosted]: People actually did this! And when their website became popular,
-it often ran out of bandwidth or computing power and became inaccessible.
+[^self-hosted]: Люди на самом деле делали это! И когда их сайт становился популярным, ему не хватало пропускной способности или компьютерной мощности, и он становился недоступным.
 
-With all that's changed, some things have stayed the same, the core building
-blocks that are the essence of the web:
 
-* The web is a _network of information_
-  linked by _hyperlinks_.
-* Information is requested with the _HTTP network protocol_
-  and structured with the _HTML document format_.
-* Documents are identified by URLs, _not_ by their content, and may be dynamic.
-* Web pages can link to auxiliary assets in different formats,
-  including images, videos, CSS, and JavaScript.
-* The user uses a _User Agent_, called a _browser_, to navigate the web.
-* All these building blocks are open, standardized, and free to use or re-use.
+Многое изменилось, но некоторые вещи остались прежними — основные строительные блоки, представляющие суть интернета:
+
+* Веб — это _информационная сеть_, связанная _гиперссылками_.
+* Информация запрашивается с помощью _сетевого протокола HTTP_ и структурируется в формате _HTML документа_.
+* Документы идентифицируются по URL-адресам, а _не_ по их содержимому, и могут быть динамическими.
+* Веб-страницы могут ссылаться на вспомогательные ресурсы в различных форматах, включая изображения, видео, CSS и JavaScript.
+* Пользователь использует _User Agent_, называемый _браузером_, для навигации по сети.
+* Все эти строительные блоки являются открытыми, стандартизированными и бесплатными для использования или реиспользования.
 
 As a philosophical matter, perhaps one or another of these principles is
 secondary. One could try to distinguish between the networking and rendering
