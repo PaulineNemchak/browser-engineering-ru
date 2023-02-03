@@ -80,24 +80,11 @@ prev: preface
 
 [^developers]: Обычно я предпочитаю использовать слово «инженер» --- отсюда и название этой книги --- но «разработчик» или «веб-разработчик» гораздо более распространены в интернете. Одна из важных причин в том, что любой может создать веб-страницу --- не только обученные программисты и специалисты в области информатики. «Веб-разработчик» также более инклюзивный термин для дополнительных, критических роли, таких как дизайнеры, авторы, редакторы и фотографы. Веб-разработчик --- это любой, кто делает веб-страницы, независимо от того, как они это делают.
 
-Working on such a codebase can feel daunting. I often find lines of code last
-touched 15 years ago by someone I've never met; or even now discover files and
-code that I never knew existed; or see lines of code that don’t look necessary,
-yet seem to be important. How do I understand that 15-year-old code? Or learn
-the purpose of these new files? Can I delete those lines of code, or are they
-there for a reason?
+Работа над такой кодовой базой может устрашать. Я часто нахожу строки кода, которые в последний раз правили 15 лет назад кем-то, кого я никогда не встречал; или — я даже сейчас обнаруживаю файлы и код, о существовании которых я не знал; или — вижу строки кода, которые не выглядят необходимыми, но похоже, что они важны. Как мне понять этот 15-летний код? Или узнать назначение этих новых файлов? Могу ли я удалить эти строки кода, или они там есть по какой-то причине?
 
-What's amazing is that, despite the scale and the pace and the complexity, there
-is still room to contribute. Every browser has thousands of unfixed bugs, from
-the smallest of mistakes to myriad mix ups and mismatches. Every browser must be
-endlessly tuned and optimized to squeeze out that last bit of performance. Every
-browser requires painstaking work to continuously refactor the code to reduce
-its complexity, often through the careful[^browsers-abstraction-hard]
-introduction of modularization and abstraction.
+Удивительно, что несмотря на масштаб, скорость и сложность, у разработчиков всё еще есть возможность внести свой вклад. У каждого браузера можно найти тысячи неисправленных ошибок, от малейших ошибок до множества путаниц и несоответствий. Каждый браузер должен бесконечно налаживаться и оптимизироваться, чтобы обеспечить ещё большую производительность. Каждый браузер требует тщательной работы по постоянному рефакторингу кода для уменьшения его сложности, часто через аккуратное[^browsers-abstraction-hard] введение модульности и абстракции.
 
-[^browsers-abstraction-hard]: Browsers are so performance-sensitive that, in
-many places, merely the introduction of an abstraction---the function call or
-branching overhead---has an unacceptable performance cost!
+[^browsers-abstraction-hard]: Браузеры настолько чувствительны к производительности, что во многих местах даже введение абстракции, такие как вызов функции или излишние ветвления в условиях, приводит к неприемлимым потерям производительности!
 
 What makes a browser different from most massive code bases is their _urgency_.
 Browsers are nearly as old as any “legacy” codebase, but are _not_ legacy, not
