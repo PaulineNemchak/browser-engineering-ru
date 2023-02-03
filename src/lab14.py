@@ -19,28 +19,28 @@ import threading
 import time
 import urllib.parse
 import wbetools
-from lab4 import print_tree
-from lab4 import HTMLParser
-from lab4 import Text, Element
-from lab6 import resolve_url
-from lab6 import tree_to_list
-from lab6 import INHERITED_PROPERTIES
-from lab6 import compute_style
-from lab6 import TagSelector, DescendantSelector
-from lab8 import layout_mode
-from lab9 import EVENT_DISPATCH_CODE
-from lab10 import COOKIE_JAR, url_origin, request
-from lab11 import draw_text, get_font, linespace, \
-    parse_blend_mode, CHROME_PX, SCROLL_STEP
 import OpenGL.GL as GL
-from lab12 import MeasureTime
-from lab13 import USE_BROWSER_THREAD, JSContext, diff_styles, \
-    clamp_scroll, CompositedLayer, absolute_bounds, \
-    DrawCompositedLayer, Task, TaskRunner, SingleThreadedTaskRunner, \
-    add_parent_pointers, absolute_bounds_for_obj, \
-    DisplayItem, DrawText, \
-    DrawLine, paint_visual_effects, WIDTH, HEIGHT, INPUT_WIDTH_PX, \
-    REFRESH_RATE_SEC, HSTEP, VSTEP, DrawRRect, draw_rect
+
+from lab2 import WIDTH, HEIGHT, HSTEP, VSTEP, SCROLL_STEP
+from lab4 import Text, Element, print_tree, HTMLParser
+from lab5 import BLOCK_ELEMENTS
+from lab6 import TagSelector, DescendantSelector
+from lab6 import INHERITED_PROPERTIES, cascade_priority, compute_style
+from lab6 import resolve_url, tree_to_list
+from lab7 import CHROME_PX
+from lab8 import INPUT_WIDTH_PX, layout_mode
+from lab9 import EVENT_DISPATCH_CODE
+from lab10 import COOKIE_JAR, request, url_origin
+from lab11 import FONTS, get_font, parse_blend_mode, linespace
+from lab11 import draw_text
+from lab12 import MeasureTime, SingleThreadedTaskRunner, TaskRunner
+from lab12 import Task, REFRESH_RATE_SEC, USE_BROWSER_THREAD
+from lab13 import JSContext, diff_styles, clamp_scroll, add_parent_pointers
+from lab13 import absolute_bounds, absolute_bounds_for_obj
+from lab13 import map_translation, parse_transform, ANIMATED_PROPERTIES
+from lab13 import CompositedLayer, paint_visual_effects
+from lab13 import DisplayItem, DrawText, DrawCompositedLayer, SaveLayer
+from lab13 import ClipRRect, Transform, DrawLine, DrawRRect, draw_rect
 
 @wbetools.patch(Element)
 class Element:
@@ -148,89 +148,29 @@ class BlockLayout:
         self.height = None
 
     def layout(self, zoom):
-        previous = None
-        for child in self.node.children:
-            if layout_mode(child) == "inline":
-                next = InlineLayout(child, self, previous)
-            else:
-                next = BlockLayout(child, self, previous)
-            self.children.append(next)
-            previous = next
-
-        self.width = style_length(
-            self.node, "width", self.parent.width, zoom)
+        self.width = self.parent.width
         self.x = self.parent.x
 
         if self.previous:
             self.y = self.previous.y + self.previous.height
         else:
             self.y = self.parent.y
+
+        mode = layout_mode(self.node)
+        if mode == "block":
+            previous = None
+            for child in self.node.children:
+                next = BlockLayout(child, self, previous)
+                self.children.append(next)
+                previous = next
+        else:
+            self.new_line()
+            self.recurse(self.node, zoom)
 
         for child in self.children:
             child.layout(zoom)
 
-        self.height = style_length(
-            self.node, "height",
-            sum([child.height for child in self.children]), zoom)
-
-    def paint(self, display_list):
-        cmds = []
-
-        rect = skia.Rect.MakeLTRB(
-            self.x, self.y,
-            self.x + self.width, self.y + self.height)
-        bgcolor = self.node.style.get("background-color",
-                                 "transparent")
-        if bgcolor != "transparent":
-            radius = float(
-                self.node.style.get("border-radius", "0px")[:-2])
-            cmds.append(DrawRRect(rect, radius, bgcolor))
-
-        for child in self.children:
-            child.paint(cmds)
-
-        paint_outline(self.node, cmds, rect)
-
-        cmds = paint_visual_effects(self.node, cmds, rect)
-        display_list.extend(cmds)
-
-    def __repr__(self):
-        return "BlockLayout(x={}, y={}, width={}, height={}, node={})".format(
-            self.x, self.x, self.width, self.height, self.node)
-
-class InlineLayout:
-    def __init__(self, node, parent, previous):
-        self.node = node
-        node.layout_object = self
-        self.parent = parent
-        self.previous = previous
-        self.children = []
-        self.x = None
-        self.y = None
-        self.width = None
-        self.height = None
-        self.display_list = None
-
-    def layout(self, zoom):
-        self.width = style_length(
-            self.node, "width", self.parent.width, zoom)
-
-        self.x = self.parent.x
-
-        if self.previous:
-            self.y = self.previous.y + self.previous.height
-        else:
-            self.y = self.parent.y
-
-        self.new_line()
-        self.recurse(self.node, zoom)
-        
-        for line in self.children:
-            line.layout(zoom)
-
-        self.height = style_length(
-            self.node, "height",
-            sum([line.height for line in self.children]), zoom)
+        self.height = sum([child.height for child in self.children])
 
     def recurse(self, node, zoom):
         if isinstance(node, Text):
@@ -246,7 +186,7 @@ class InlineLayout:
 
     def new_line(self):
         self.previous_word = None
-        self.cursor_x = self.x
+        self.cursor_x = 0
         last_line = self.children[-1] if self.children else None
         new_line = LineLayout(self.node, self, last_line)
         self.children.append(new_line)
@@ -258,7 +198,7 @@ class InlineLayout:
         font = get_font(size, weight, size)
         for word in node.text.split():
             w = font.measureText(word)
-            if self.cursor_x + w > self.x + self.width:
+            if self.cursor_x + w > self.width:
                 self.new_line()
             line = self.children[-1]
             text = TextLayout(node, word, line, self.previous_word)
@@ -268,7 +208,7 @@ class InlineLayout:
 
     def input(self, node, zoom):
         w = device_px(INPUT_WIDTH_PX, zoom)
-        if self.cursor_x + w > self.x + self.width:
+        if self.cursor_x + w > self.width:
             self.new_line()
         line = self.children[-1]
         input = InputLayout(node, line, self.previous_word)
@@ -300,13 +240,15 @@ class InlineLayout:
         for child in self.children:
             child.paint(cmds)
 
+        paint_outline(self.node, cmds, rect)
+
         if not is_atomic:
             cmds = paint_visual_effects(self.node, cmds, rect)
         display_list.extend(cmds)
 
     def __repr__(self):
-        return "InlineLayout(x={}, y={}, width={}, height={}, node={})".format(
-            self.x, self.y, self.width, self.height, self.node)
+        return "BlockLayout[{}](x={}, y={}, width={}, height={}, node={})".format(
+            layout_mode(self.node), self.x, self.y, self.width, self.height, self.node)
 
 class LineLayout:
     def __init__(self, node, parent, previous):
@@ -368,11 +310,6 @@ class LineLayout:
 
 def device_px(css_px, zoom):
     return css_px * zoom
-
-def style_length(node, style_name, default_value, zoom):
-    style_val = node.style.get(style_name)
-    return device_px(float(style_val[:-2]), zoom) if style_val \
-        else default_value
 
 def get_tabindex(node):
     return int(node.attributes.get("tabindex", "9999999"))
@@ -510,10 +447,8 @@ class InputLayout:
             device_px(float(self.node.style["font-size"][:-2]), zoom)
         self.font = get_font(size, weight, style)
 
-        self.width = style_length(
-            self.node, "width", device_px(INPUT_WIDTH_PX, zoom), zoom)
-        self.height = style_length(
-            self.node, "height", linespace(self.font), zoom)
+        self.width = device_px(INPUT_WIDTH_PX, zoom)
+        self.height = linespace(self.font)
 
         if self.previous:
             space = self.previous.font.measureText(" ")
@@ -1279,9 +1214,9 @@ class Tab:
 
     def zoom_by(self, increment):
         if increment > 0:
-            self.zoom *= 1.1;
+            self.zoom *= 1.1
         else:
-            self.zoom *= 1/1.1;
+            self.zoom *= 1/1.1
         self.set_needs_render()
 
     def reset_zoom(self):
@@ -1460,9 +1395,9 @@ class Browser:
                 tree_to_list(cmd, all_commands)
         non_composited_commands = [cmd
             for cmd in all_commands
-            if not cmd.needs_compositing() and \
+            if not cmd.needs_compositing and \
                 (not cmd.parent or \
-                 cmd.parent.needs_compositing())
+                 cmd.parent.needs_compositing)
         ]
         for cmd in non_composited_commands:
             for layer in reversed(self.composited_layers):

@@ -14,7 +14,9 @@ from lab2 import WIDTH, HEIGHT, HSTEP, VSTEP, SCROLL_STEP
 from lab3 import FONTS, get_font
 from lab4 import Text, Element, print_tree, HTMLParser
 from lab5 import BLOCK_ELEMENTS, layout_mode, DrawRect
-from lab6 import DrawText, CSSParser, cascade_priority, style, resolve_url, tree_to_list
+from lab6 import CSSParser, TagSelector, DescendantSelector
+from lab6 import INHERITED_PROPERTIES, style, cascade_priority, compute_style
+from lab6 import DrawText, resolve_url, tree_to_list
 
 class LineLayout:
     def __init__(self, node, parent, previous):
@@ -96,6 +98,7 @@ class TextLayout:
         display_list.append(
             DrawText(self.x, self.y, self.word, self.font, color))
     
+    @wbetools.js_hide
     def __repr__(self):
         return ("TextLayout(x={}, y={}, width={}, height={}, " +
             "node={}, word={})").format(
@@ -114,14 +117,6 @@ class BlockLayout:
 
     def layout(self):
         wbetools.record("layout_pre", self)
-        previous = None
-        for child in self.node.children:
-            if layout_mode(child) == "inline":
-                next = InlineLayout(child, self, previous)
-            else:
-                next = BlockLayout(child, self, previous)
-            self.children.append(next)
-            previous = next
 
         self.width = self.parent.width
         self.x = self.parent.x
@@ -130,6 +125,17 @@ class BlockLayout:
             self.y = self.previous.y + self.previous.height
         else:
             self.y = self.parent.y
+
+        mode = layout_mode(self.node)
+        if mode == "block":
+            previous = None
+            for child in self.node.children:
+                next = BlockLayout(child, self, previous)
+                self.children.append(next)
+                previous = next
+        else:
+            self.new_line()
+            self.recurse(self.node)
 
         for child in self.children:
             child.layout()
@@ -137,38 +143,6 @@ class BlockLayout:
         self.height = sum([child.height for child in self.children])
 
         wbetools.record("layout_post", self)
-
-    def paint(self, display_list):
-        for child in self.children:
-            child.paint(display_list)
-
-    def __repr__(self):
-        return "BlockLayout(x={}, y={}, width={}, height={})".format(
-            self.x, self.y, self.width, self.height)
-
-class InlineLayout:
-    def __init__(self, node, parent, previous):
-        self.node = node
-        self.parent = parent
-        self.previous = previous
-        self.children = []
-
-    def layout(self):
-        self.width = self.parent.width
-        self.x = self.parent.x
-
-        if self.previous:
-            self.y = self.previous.y + self.previous.height
-        else:
-            self.y = self.parent.y
-
-        self.new_line()
-        self.recurse(self.node)
-        
-        for line in self.children:
-            line.layout()
-
-        self.height = sum([line.height for line in self.children])
 
     def recurse(self, node):
         if isinstance(node, Text):
@@ -181,7 +155,7 @@ class InlineLayout:
 
     def new_line(self):
         self.previous_word = None
-        self.cursor_x = self.x
+        self.cursor_x = 0
         last_line = self.children[-1] if self.children else None
         new_line = LineLayout(self.node, self, last_line)
         self.children.append(new_line)
@@ -194,7 +168,7 @@ class InlineLayout:
         font = get_font(size, weight, style)
         for word in node.text.split():
             w = font.measure(word)
-            if self.cursor_x + w > self.width - HSTEP:
+            if self.cursor_x + w > self.width:
                 self.new_line()
             line = self.children[-1]
             text = TextLayout(node, word, line, self.previous_word)
@@ -209,12 +183,13 @@ class InlineLayout:
             x2, y2 = self.x + self.width, self.y + self.height
             rect = DrawRect(self.x, self.y, x2, y2, bgcolor)
             display_list.append(rect)
+
         for child in self.children:
             child.paint(display_list)
 
     def __repr__(self):
-        return "InlineLayout(x={}, y={}, width={}, height={})".format(
-            self.x, self.y, self.width, self.height)
+        return "BlockLayout[{}](x={}, y={}, width={}, height={})".format(
+            layout_mode(self.node), self.x, self.y, self.width, self.height)
 
 class DocumentLayout:
     def __init__(self, node):

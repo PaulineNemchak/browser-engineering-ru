@@ -13,17 +13,14 @@ import skia
 import socket
 import ssl
 import urllib.parse
-from lab4 import print_tree
-from lab4 import Element
-from lab4 import Text
-from lab4 import HTMLParser
-from lab6 import cascade_priority
-from lab6 import resolve_url
-from lab6 import tree_to_list
-from lab6 import INHERITED_PROPERTIES
-from lab6 import CSSParser, compute_style, style
-from lab6 import TagSelector, DescendantSelector
-from lab8 import layout_mode
+from lab2 import WIDTH, HEIGHT, HSTEP, VSTEP, SCROLL_STEP
+from lab4 import Text, Element, print_tree, HTMLParser
+from lab5 import BLOCK_ELEMENTS
+from lab6 import CSSParser, TagSelector, DescendantSelector
+from lab6 import INHERITED_PROPERTIES, style, cascade_priority, compute_style
+from lab6 import resolve_url, tree_to_list
+from lab7 import CHROME_PX
+from lab8 import INPUT_WIDTH_PX, layout_mode
 from lab9 import EVENT_DISPATCH_CODE
 from lab10 import COOKIE_JAR, request, url_origin, JSContext
 
@@ -215,15 +212,6 @@ class BlockLayout:
         self.height = None
 
     def layout(self):
-        previous = None
-        for child in self.node.children:
-            if layout_mode(child) == "inline":
-                next = InlineLayout(child, self, previous)
-            else:
-                next = BlockLayout(child, self, previous)
-            self.children.append(next)
-            previous = next
-
         self.width = self.parent.width
         self.x = self.parent.x
 
@@ -231,64 +219,22 @@ class BlockLayout:
             self.y = self.previous.y + self.previous.height
         else:
             self.y = self.parent.y
+
+        mode = layout_mode(self.node)
+        if mode == "block":
+            previous = None
+            for child in self.node.children:
+                next = BlockLayout(child, self, previous)
+                self.children.append(next)
+                previous = next
+        else:
+            self.new_line()
+            self.recurse(self.node)
 
         for child in self.children:
             child.layout()
 
         self.height = sum([child.height for child in self.children])
-
-    def paint(self, display_list):
-        cmds = []
-
-        rect = skia.Rect.MakeLTRB(
-            self.x, self.y,
-            self.x + self.width, self.y + self.height)
-        bgcolor = self.node.style.get("background-color",
-                                 "transparent")
-        if bgcolor != "transparent":
-            radius = float(
-                self.node.style.get("border-radius", "0px")[:-2])
-            cmds.append(DrawRRect(rect, radius, bgcolor))
-
-        for child in self.children:
-            child.paint(cmds)
-
-        cmds = paint_visual_effects(self.node, cmds, rect)
-        display_list.extend(cmds)
-
-    def __repr__(self):
-        return "BlockLayout(x={}, y={}, width={}, height={}, node={})".format(
-            self.x, self.x, self.width, self.height, self.node)
-
-class InlineLayout:
-    def __init__(self, node, parent, previous):
-        self.node = node
-        self.parent = parent
-        self.previous = previous
-        self.children = []
-        self.x = None
-        self.y = None
-        self.width = None
-        self.height = None
-        self.display_list = None
-
-    def layout(self):
-        self.width = self.parent.width
-
-        self.x = self.parent.x
-
-        if self.previous:
-            self.y = self.previous.y + self.previous.height
-        else:
-            self.y = self.parent.y
-
-        self.new_line()
-        self.recurse(self.node)
-        
-        for line in self.children:
-            line.layout()
-
-        self.height = sum([line.height for line in self.children])
 
     def recurse(self, node):
         if isinstance(node, Text):
@@ -304,7 +250,7 @@ class InlineLayout:
 
     def new_line(self):
         self.previous_word = None
-        self.cursor_x = self.x
+        self.cursor_x = 0
         last_line = self.children[-1] if self.children else None
         new_line = LineLayout(self.node, self, last_line)
         self.children.append(new_line)
@@ -316,7 +262,7 @@ class InlineLayout:
         font = get_font(size, weight, size)
         for word in node.text.split():
             w = font.measureText(word)
-            if self.cursor_x + w > self.x + self.width:
+            if self.cursor_x + w > self.width:
                 self.new_line()
             line = self.children[-1]
             text = TextLayout(node, word, line, self.previous_word)
@@ -326,7 +272,7 @@ class InlineLayout:
 
     def input(self, node):
         w = INPUT_WIDTH_PX
-        if self.cursor_x + w > self.x + self.width:
+        if self.cursor_x + w > self.width:
             self.new_line()
         line = self.children[-1]
         input = InputLayout(node, line, self.previous_word)
@@ -342,19 +288,21 @@ class InlineLayout:
         cmds = []
 
         rect = skia.Rect.MakeLTRB(
-            self.x, self.y, self.x + self.width,
-            self.y + self.height)
+            self.x, self.y,
+            self.x + self.width, self.y + self.height)
 
+        bgcolor = self.node.style.get("background-color",
+                                 "transparent")
+        
         is_atomic = not isinstance(self.node, Text) and \
             (self.node.tag == "input" or self.node.tag == "button")
 
         if not is_atomic:
-            bgcolor = self.node.style.get("background-color",
-                                     "transparent")
             if bgcolor != "transparent":
-                radius = float(self.node.style.get("border-radius", "0px")[:-2])
+                radius = float(
+                    self.node.style.get("border-radius", "0px")[:-2])
                 cmds.append(DrawRRect(rect, radius, bgcolor))
- 
+
         for child in self.children:
             child.paint(cmds)
 
@@ -363,8 +311,8 @@ class InlineLayout:
         display_list.extend(cmds)
 
     def __repr__(self):
-        return "InlineLayout(x={}, y={}, width={}, height={}, node={})".format(
-            self.x, self.y, self.width, self.height, self.node)
+        return "BlockLayout[{}](x={}, y={}, width={}, height={}, node={})".format(
+            layout_mode(self.node), self.x, self.y, self.width, self.height, self.node)
 
 class DocumentLayout:
     def __init__(self, node):
@@ -388,8 +336,6 @@ class DocumentLayout:
 
     def __repr__(self):
         return "DocumentLayout()"
-
-INPUT_WIDTH_PX = 200
 
 class LineLayout:
     def __init__(self, node, parent, previous):
@@ -560,9 +506,6 @@ def paint_visual_effects(node, cmds, rect):
         ], should_save=needs_blend_isolation),
     ]
 
-SCROLL_STEP = 100
-CHROME_PX = 100
-
 class Tab:
     def __init__(self):
         self.history = []
@@ -709,9 +652,6 @@ class Tab:
             self.history.pop()
             back = self.history.pop()
             self.load(back)
-
-WIDTH, HEIGHT = 800, 600
-HSTEP, VSTEP = 13, 18
 
 class Browser:
     def __init__(self):
