@@ -86,26 +86,11 @@ prev: preface
 
 [^browsers-abstraction-hard]: Браузеры настолько чувствительны к производительности, что во многих местах даже введение абстракции, такие как вызов функции или излишние ветвления в условиях, приводит к неприемлимым потерям производительности!
 
-What makes a browser different from most massive code bases is their _urgency_.
-Browsers are nearly as old as any “legacy” codebase, but are _not_ legacy, not
-abandoned or half-deprecated, not slated for replacement. On the contrary, they
-are vital to the world’s economy. Browser engineers must therefore fix and
-improve rather than abandon and replace. And since the character of the web
-itself is highly decentralized, the use cases met by browsers are to a
-significant extent _not determined_ by the companies “owning” or “controlling” a
-particular browser. Other people---you---can contribute ideas and proposals and
-implementations.
+Что отличает браузер от большинства массивных кодовых баз, так это их _безотлагательность_. Браузеры почти так же стары, как и любая другая легаси кодовая база, но они _не_ легаси, не заброшены или полуустаревшие, не подлежат замене. Напротив, они жизненно важны для мировой экономики. Поэтому инженеры браузеров должны исправлять и улучшать их, а не отказываться от них и заменять. А поскольку сам характер веба в высшей степени децентрализован, сценарии использования браузеров в значительной степени _не определяются_ компаниями, «владеющими» или «контролирующими» конкретный браузер. Другие люди — как вы — можете внести свои идеи, предложения и реализации.
 
-What's amazing is that, despite the scale and the pace and the complexity, there
-is still plenty of room to contribute. Every browser today is open-source, which
-opens up its implementation to the whole community of web developers. Browsers
-evolve like giant R&D projects, where new ideas are constantly being proposed
-and tested out. As you would expect, some features fail and some succeed. The
-ones that succeed end up in specifications and are implemented by other
-browsers. That means that every web browser is open to contributions---whether
-fixing bugs or proposing new features or implementing promising optimizations.
+Удивительно то, что, несмотря на масштабы, темпы и сложность, все еще остается много возможностей для внесения своего вклада. Каждый браузер сегодня имеет открытый исходный код, что открывает их реализации для всего сообщества веб-разработчиков. Браузеры развиваются как гигантские научно-исследовательские проекты, где постоянно предлагаются и тестируются новые идеи. Как и следовало ожидать, некоторые функции оказываются неудачными, а некоторые — успешными. Те, что удались, попадают в спецификации и внедряются в другие браузеры. Это означает, что каждый веб-браузер открыт для контрибуций — будь то исправление ошибок, предложение новых функций или внедрение многообещающих оптимизаций.
 
-And it's worth contributing, because working on web browsers is a lot of fun.
+И контрибьютить в браузеры стоит, потому что работа над веб-браузерами — очень весело.
 
 Browser code concepts
 =====================
